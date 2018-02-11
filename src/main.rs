@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate clap;
 
-use clap::App;
+use clap::{App, ArgMatches};
 
 use std::process::{self, Command, Stdio};
 
@@ -30,17 +30,7 @@ static CARGO_FLAGS: &[&str] = &[
 
 static CARGO_FLAGS_MULTIPLE: &[&str] = &["verbose"];
 
-fn main() {
-    let cli = load_yaml!("cli.yml");
-    let matches = App::from_yaml(cli).get_matches();
-
-    if !matches.is_present("mpirun") {
-        println!("Only the 'mpirun' sub-command is implemented.");
-        process::exit(-1);
-    }
-
-    let matches = matches.subcommand_matches("mpirun").unwrap();
-
+fn build_target<'a>(matches: &ArgMatches<'a>) {
     let mut cargo_build = Command::new("cargo");
     cargo_build.arg("build");
 
@@ -82,4 +72,18 @@ fn main() {
         };
         process::exit(code);
     }
+}
+
+fn main() {
+    let cli = load_yaml!("cli.yml");
+    let matches = App::from_yaml(cli).get_matches();
+
+    if !matches.is_present("mpirun") {
+        println!("Only the 'mpirun' sub-command is implemented.");
+        process::exit(-1);
+    }
+
+    let matches = matches.subcommand_matches("mpirun").unwrap();
+
+    build_target(&matches);
 }
