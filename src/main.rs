@@ -63,11 +63,8 @@ fn main() {
     }
 
     for flag in CARGO_FLAGS_MULTIPLE {
-        let occurrences = matches.occurrences_of(flag);
-        if occurrences > 0 {
-            for _ in 0..occurrences {
-                cargo_build.arg("--".to_owned() + flag);
-            }
+        for _ in 0..matches.occurrences_of(flag) {
+            cargo_build.arg("--".to_owned() + flag);
         }
     }
 
