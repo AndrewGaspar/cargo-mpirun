@@ -1,6 +1,6 @@
 use clap::ArgMatches;
 
-use std::process::{self, Command, Stdio};
+use std::process::{self, Command};
 
 static CARGO_OPTIONS: &[&str] = &[
     "bin",
@@ -56,9 +56,6 @@ pub fn run<'a>(matches: &ArgMatches<'a>) {
     }
 
     let status = cargo_build
-        .stdin(Stdio::inherit())
-        .stdout(Stdio::inherit())
-        .stderr(Stdio::inherit())
         .status()
         .expect("Failed to execute cargo build - is cargo in your path?");
 

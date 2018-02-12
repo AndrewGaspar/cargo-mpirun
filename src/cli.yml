@@ -30,10 +30,12 @@ subcommands:
                 long: bin
                 value_name: NAME
                 help: Name of the bin target to run
+                conflicts_with: example
             - example:
                 long: example
                 value_name: NAME
                 help: Name of the example target to run
+                conflicts_with: bin
             - package:
                 short: p
                 long: package
