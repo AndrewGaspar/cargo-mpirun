@@ -12,6 +12,7 @@ use std::path::*;
 
 mod cargo_build;
 mod cargo_metadata;
+mod mpirun;
 
 use cargo_metadata::*;
 
@@ -82,5 +83,5 @@ fn main() {
 
     let target = find_target(&metadata, matches);
 
-    println!("{}", target.to_str().unwrap());
+    mpirun::run(&target, matches);
 }

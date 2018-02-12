@@ -19,8 +19,14 @@ subcommands:
         args:
             - num_processes:
                 short: n
+                long: np
                 value_name: num_processes
                 help: Number of processes to run
+            - num_processes_per_node:
+                short: N
+                long: npernode
+                value_name: num_processes
+                help: Launch num_processes per node on all allocated nodes
             - oversubscribe:
                 long: oversubscribe
                 help: >
