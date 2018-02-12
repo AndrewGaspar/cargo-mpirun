@@ -1,5 +1,5 @@
 # cargo-mpirun
-[![Build Status](https://travis-ci.org/AndrewGaspar/cargo-mpirun.svg?branch=master)](https://travis-ci.org/AndrewGaspar/cargo-mpirun)
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/AndrewGaspar/cargo-mpirun)
 
 `cargo-mpirun` is cargo custom command similar to "cargo run" that runs the
 target program with mpiexec. It streamlines building and testing MPI programs
