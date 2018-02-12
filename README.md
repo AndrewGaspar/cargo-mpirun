@@ -1,14 +1,15 @@
 # cargo-mpirun
-A cargo extension similar to "cargo run" that runs the target program with mpirun.
+A cargo extension similar to "cargo run" that runs the target program with
+mpiexec.
 
 ## Usage
 ```
-cargo-mpirun-mpirun 0.1
+cargo-mpirun 0.1
 Andrew Gaspar <andrew.gaspar@outlook.com>
 Run the main binary of the local package (src/main.rs) using mpiexec.
 
 USAGE:
-    cargo-mpirun mpirun [OPTIONS]
+    cargo mpirun [OPTIONS]
 
 OPTIONS:
     -n, --np <num_processes>          Number of processes to run
@@ -58,6 +59,4 @@ and `--example` specifies the example target to run. At most one of `--bin` or
 All of the trailing arguments are passed to mpiexec. If you're passing arguments
 to both Cargo and the binary, the ones after `--` go to mpiexec, the ones before
 go to Cargo.
-
-
 ```

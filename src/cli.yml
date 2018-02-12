@@ -1,4 +1,5 @@
 name: cargo
+bin_name: cargo
 subcommands:
     - mpirun:
         version: "0.1"
