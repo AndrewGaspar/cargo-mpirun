@@ -1,8 +1,57 @@
 # cargo-mpirun
-A cargo extension similar to "cargo run" that runs the target program with
-mpiexec.
+`cargo-mpirun` is cargo custom command similar to "cargo run" that runs the
+target program with mpiexec. It streamlines building and testing MPI programs
+written in Rust.
+
+## Requirements
+A compliant MPI installation is required with its `mpiexec` command available in
+PATH. `cargo mpirun` uses `mpiexec` internally, which is the standardized CLI
+for starting MPI jobs.
+
+## Installation
+`cargo-mpirun` can be installed from Cargo:
+
+```
+cargo install cargo-mpirun
+```
+
+## Related Projects
+If you're interested in writing MPI applications in Rust, take a look at
+[rsmpi](https://github.com/bsteinb/rsmpi). It provides a zero-overhead, safe
+abstraction over the C MPI APIs.
 
 ## Usage
+Invoking `cargo-mpirun` is easy. Since `cargo-mpirun` is a cargo custom command,
+it is contextualized to the current cargo project. Therefore, just change
+directory to the root of your Rust binary MPI project and run:
+```
+cargo mpirun
+```
+
+This will invoke the binary file with `mpiexec` using the default `mpiexec`
+parameters.
+
+If you would like to specify the number of processes to be used, the typical
+`mpiexec` parameters apply:
+```
+cargo mpirun -n <num_processes>
+```
+
+`num_processes` is a positive integer. Similarly, `--oversubscribe` can be used
+to force MPI to allocate more processes than processing elements.
+
+If your Cargo workspace contains multiple bin targets, specify the target with
+`--bin`:
+```
+cargo mpirun --bin <target>
+```
+
+Similarly, `--example` can be used to run an example in the project instead.
+```
+cargo mpirun --example <example>
+```
+
+### Full Usage
 ```
 cargo-mpirun 0.1
 Andrew Gaspar <andrew.gaspar@outlook.com>
