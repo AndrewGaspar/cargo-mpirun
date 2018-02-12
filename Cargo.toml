@@ -1,11 +1,12 @@
 [package]
 name = "cargo-mpirun"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Andrew Gaspar <andrew.gaspar@outlook.com>"]
 description = """
     `cargo mpirun` allows you to easily build and run your MPI applications in
     a single command. It emulates `cargo run`, allowing you to specify a \
     target to be built and run, and cargo takes care of the rest."""
+readme = "README.md"
 license = "MIT"
 repository = "https://github.com/AndrewGaspar/cargo-mpirun"
 
@@ -14,3 +15,6 @@ clap = { version = "~2.29", features=["yaml"] }
 serde = "1.0"
 serde_json = "1.0"
 serde_derive = "1.0"
+
+[badges]
+travis-ci = { repository = "AndrewGaspar/cargo-mpirun", branch = "master" }

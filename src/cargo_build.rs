@@ -7,7 +7,6 @@ static CARGO_OPTIONS: &[&str] = &[
     "example",
     "package",
     "jobs",
-    "release",
     "target",
     "manifest-path",
     "color",
@@ -23,6 +22,7 @@ static CARGO_FLAGS: &[&str] = &[
     "quiet",
     "frozen",
     "locked",
+    "release",
 ];
 
 static CARGO_FLAGS_MULTIPLE: &[&str] = &["verbose"];
