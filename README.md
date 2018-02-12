@@ -2,9 +2,9 @@
 [![Travis](https://img.shields.io/travis/AndrewGaspar/cargo-mpirun.svg?style=flat-square)](https://travis-ci.org/AndrewGaspar/cargo-mpirun)
 [![Crates.io](https://img.shields.io/crates/v/cargo-mpirun.svg?style=flat-square)](https://crates.io/crates/cargo-mpirun)
 
-`cargo-mpirun` is cargo custom command similar to "cargo run" that runs the
-target program with mpiexec. It streamlines building and testing MPI programs
-written in Rust.
+`cargo-mpirun` is a cargo custom command similar to `cargo run` that runs the
+target with `mpiexec`. It streamlines building and testing MPI programs written
+in Rust.
 
 ## Requirements
 A compliant MPI installation is required with its `mpiexec` command available in
