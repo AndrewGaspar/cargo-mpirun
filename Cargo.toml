@@ -2,6 +2,12 @@
 name = "cargo-mpirun"
 version = "0.1.0"
 authors = ["Andrew Gaspar <andrew.gaspar@outlook.com>"]
+description = """
+    `cargo mpirun` allows you to easily build and run your MPI applications in
+    a single command. It emulates `cargo run`, allowing you to specify a \
+    target to be built and run, and cargo takes care of the rest."""
+license = "MIT"
+repository = "https://github.com/AndrewGaspar/cargo-mpirun"
 
 [dependencies]
 clap = { version = "~2.29", features=["yaml"] }

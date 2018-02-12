@@ -79,10 +79,12 @@ subcommands:
                 long: verbose
                 multiple: true
                 help: Use verbose output (-vv very verbose/build.rs output)
+                conflicts_with: quiet
             - quiet:
                 short: q
                 long: quiet
                 help: No output printed to stdout
+                conflicts_with: verbose
             - color:
                 long: color
                 value_name: WHEN
