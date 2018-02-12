@@ -1,7 +1,7 @@
 # cargo-mpirun
 A cargo extension similar to "cargo run" that runs the target program with mpirun.
 
-# Usage
+## Usage
 ```
 cargo-mpirun-mpirun 0.1
 Andrew Gaspar <andrew.gaspar@outlook.com>
