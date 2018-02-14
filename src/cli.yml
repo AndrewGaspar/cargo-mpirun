@@ -109,3 +109,8 @@ subcommands:
                 value_name: FLAG
                 multiple: true
                 help: Unstable (nightly-only) flags to Cargo
+            - args:
+                last: true
+                allow_hyphen_values: true
+                multiple: true
+                help: Arguments for mpiexec
