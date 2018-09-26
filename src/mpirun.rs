@@ -17,11 +17,11 @@ pub fn run(executable: &Path, matches: &ArgMatches) -> ! {
         mpirun.arg("--oversubscribe");
     }
 
+    mpirun.arg(executable);
+
     if let Some(args) = matches.values_of("args") {
         mpirun.args(args);
     }
-
-    mpirun.arg(executable);
 
     if matches.is_present("verbose") {
         eprintln!("Running: {:?}", mpirun);
