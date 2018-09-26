@@ -26,9 +26,9 @@ pub fn run(executable: &Path, matches: &ArgMatches) -> ! {
     let code = match mpirun.status() {
         Ok(status) => status.code().unwrap_or(-1),
         Err(_) => {
-            eprintln!("Could not find mpirun - is it in your user path?");
+            eprintln!("Could not find mpiexec - is it in your user path?");
             -1
-        },
+        }
     };
 
     process::exit(code)
