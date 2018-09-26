@@ -6,7 +6,7 @@ pub fn run(executable: &Path, matches: &ArgMatches) -> ! {
     let mut mpirun = Command::new("mpiexec");
 
     if let Some(np) = matches.value_of("num_processes") {
-        mpirun.arg("--np").arg(np);
+        mpirun.arg("-n").arg(np);
     }
 
     if let Some(n) = matches.value_of("num_processes_per_node") {

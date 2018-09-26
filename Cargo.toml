@@ -1,6 +1,6 @@
 [package]
 name = "cargo-mpirun"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Andrew Gaspar <andrew.gaspar@outlook.com>"]
 description = """
     `cargo mpirun` allows you to easily build and run your MPI applications in
