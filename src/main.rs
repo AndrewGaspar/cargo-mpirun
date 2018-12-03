@@ -1,20 +1,14 @@
+extern crate cargo_metadata;
 #[macro_use]
 extern crate clap;
-
-extern crate serde;
-extern crate serde_json;
-
-#[macro_use]
-extern crate serde_derive;
 
 use clap::{App, ArgMatches};
 use std::path::*;
 
 mod cargo_build;
-mod cargo_metadata;
 mod mpirun;
 
-use cargo_metadata::*;
+use cargo_metadata::{Metadata, Package};
 
 fn find_target(metadata: &Metadata, args: &ArgMatches) -> PathBuf {
     let package: &Package = {
@@ -54,7 +48,11 @@ fn find_target(metadata: &Metadata, args: &ArgMatches) -> PathBuf {
         executable_path.push("examples");
         executable_path.push(example);
     } else {
-        let bin_targets: Vec<_> = package.targets.iter().filter(|t| t.kind[0] == "bin").collect();
+        let bin_targets: Vec<_> = package
+            .targets
+            .iter()
+            .filter(|t| t.kind[0] == "bin")
+            .collect();
 
         if bin_targets.is_empty() {
             eprintln!("The target package does not contain any bin targets.");
@@ -79,7 +77,8 @@ fn main() {
         .expect("Only the 'mpirun' sub-command is implemented.");
 
     cargo_build::run(&matches);
-    let metadata = cargo_metadata::run(&matches);
+    let metadata =
+        cargo_metadata::metadata(matches.value_of("manifest-path").map(Path::new)).unwrap();
 
     let target = find_target(&metadata, matches);
 
