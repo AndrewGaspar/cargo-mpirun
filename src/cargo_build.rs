@@ -62,7 +62,7 @@ pub fn run<'a>(matches: &ArgMatches<'a>) {
     if !status.success() {
         let code = match status.code() {
             Some(x) => x,
-            None => 127,
+            None => 101,
         };
         process::exit(code);
     }

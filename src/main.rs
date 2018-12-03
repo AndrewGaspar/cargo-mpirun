@@ -11,61 +11,86 @@ mod mpirun;
 use cargo_metadata::{Metadata, Package};
 
 fn find_target(metadata: &Metadata, args: &ArgMatches) -> PathBuf {
-    let package: &Package = {
+    let packages: Vec<&Package> = {
         if let Some(name) = args.value_of("package") {
-            metadata.packages.iter().find(|p| p.name == name).unwrap()
+            vec![metadata.packages.iter().find(|p| p.name == name).unwrap()]
         } else {
-            &metadata.packages[0]
+            metadata.packages.iter().collect()
         }
     };
 
-    let root = Path::new(&package.manifest_path).parent().unwrap();
-
-    let mut executable_path: PathBuf = root.join("target");
-    if args.is_present("release") {
-        executable_path.push("release");
+    let target_directory = Path::new(&metadata.target_directory);
+    let executable_path = if args.is_present("release") {
+        target_directory.join("release")
     } else {
-        executable_path.push("debug");
-    }
+        target_directory.join("debug")
+    };
 
     if let Some(bin) = args.value_of("bin") {
         // Validates bin actually exists
-        package
-            .targets
+        let matching_bins: Vec<_> = packages
             .iter()
-            .find(|t| t.kind[0] == "bin" && t.name == bin)
-            .unwrap();
+            .flat_map(|p| p.targets.iter())
+            .filter(|t| t.kind[0] == "bin" && t.name == bin)
+            .collect();
 
-        executable_path.push(bin);
+        if matching_bins.len() > 1 {
+            println!(
+                "error: `cargo mpirun` can run at most one executable, but multiple were specified"
+            );
+            std::process::exit(101);
+        } else if matching_bins.is_empty() {
+            println!("error: no bin target named `{}`", bin);
+            std::process::exit(101);
+        }
+
+        executable_path.join(bin)
     } else if let Some(example) = args.value_of("example") {
         // Validates example actually exists
-        package
-            .targets
+        let examples: Vec<_> = packages
             .iter()
-            .find(|t| t.kind[0] == "example" && t.name == example)
-            .unwrap();
+            .flat_map(|p| p.targets.iter())
+            .filter(|t| t.kind[0] == "example" && t.name == example)
+            .collect();
 
-        executable_path.push("examples");
-        executable_path.push(example);
+        if examples.len() > 1 {
+            println!(
+                "error: `cargo mpirun` can run at most one executable, but multiple were specified"
+            );
+            std::process::exit(101);
+        } else if examples.is_empty() {
+            println!("error: no example target named `{}`", example);
+            std::process::exit(101);
+        }
+
+        executable_path.join("examples").join(example)
     } else {
-        let bin_targets: Vec<_> = package
-            .targets
+        // Get all bins targets in workspace
+        let bin_targets: Vec<_> = packages
             .iter()
+            .flat_map(|p| p.targets.iter())
             .filter(|t| t.kind[0] == "bin")
             .collect();
 
         if bin_targets.is_empty() {
-            eprintln!("The target package does not contain any bin targets.");
-            std::process::exit(-1);
+            eprintln!("error: a bin target must be available for `cargo mpirun`");
+            std::process::exit(101);
         } else if bin_targets.len() > 1 {
-            eprintln!("You must specify --bin if the package contains more than one bin");
-            std::process::exit(-1);
+            eprintln!(
+                "error: `cargo mpirun` requires that a project only have one executable; use \
+                 the `--bin` option to specify which one to run \n\
+                 available binaries: {}",
+                bin_targets
+                    .iter()
+                    .map(|t| t.name.as_str())
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            );
+            std::process::exit(101);
         }
 
-        executable_path.push(&bin_targets[0].name);
+        executable_path.join(&bin_targets[0].name)
     }
-
-    executable_path
 }
 
 fn main() {
