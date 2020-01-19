@@ -2,7 +2,7 @@ name: cargo
 bin_name: cargo
 subcommands:
     - mpirun:
-        version: 0.1.7
+        version: 0.1.8
         author: Andrew Gaspar <andrew.gaspar@outlook.com>
         about: >
             Run the main binary of the local package (src/main.rs) using

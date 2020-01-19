@@ -1,6 +1,6 @@
 [package]
 name = "cargo-mpirun"
-version = "0.1.7"
+version = "0.1.8"
 authors = ["Andrew Gaspar <andrew.gaspar@outlook.com>"]
 description = """
     `cargo mpirun` allows you to easily build and run your MPI applications in
@@ -13,8 +13,8 @@ categories = ["development-tools"]
 keywords = ["message-passing", "parallel", "MPI", "cargo-subcommand"]
 
 [dependencies]
-cargo_metadata = "0.6.2"
-clap = { version = "~2.32.0", features=["yaml"] }
+cargo_metadata = "0.9.1"
+clap = { version = "~2.33.0", features=["yaml"] }
 
 [badges]
 travis-ci = { repository = "AndrewGaspar/cargo-mpirun", branch = "master" }

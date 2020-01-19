@@ -102,6 +102,13 @@ fn get_applicable_target<'a>(metadata: &'a Metadata, args: &'a ArgMatches) -> Ap
 
 fn find_target(metadata: &Metadata, args: &ArgMatches, target: &ApplicableTarget) -> PathBuf {
     let target_directory = Path::new(&metadata.target_directory);
+
+    let target_directory: PathBuf = if let Some(target) = args.value_of("target") {
+        target_directory.join(target)
+    } else {
+        target_directory.into()
+    };
+
     let executable_path = if args.is_present("release") {
         target_directory.join("release")
     } else {
@@ -115,7 +122,7 @@ fn find_target(metadata: &Metadata, args: &ArgMatches, target: &ApplicableTarget
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = load_yaml!("cli.yml");
     let matches = App::from_yaml(cli).get_matches();
 
@@ -123,8 +130,12 @@ fn main() {
         .subcommand_matches("mpirun")
         .expect("Only the 'mpirun' sub-command is implemented.");
 
-    let metadata =
-        cargo_metadata::metadata(matches.value_of("manifest-path").map(Path::new)).unwrap();
+    let mut metadata_cmd = cargo_metadata::MetadataCommand::new();
+    if let Some(path) = matches.value_of("manifest-path").map(Path::new) {
+        metadata_cmd.manifest_path(path);
+    }
+
+    let metadata = metadata_cmd.exec()?;
 
     let target = get_applicable_target(&metadata, &matches);
 
