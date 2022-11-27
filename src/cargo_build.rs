@@ -35,6 +35,12 @@ pub fn add_cargo_options(command: &mut Command, args: &crate::Args) {
     if let Some(ref val) = args.target {
         command.arg("--target").arg(val);
     }
+    if let Some(ref val) = args.target_dir {
+        command.arg("--target-dir").arg(val);
+    }
+    for keyval in args.config.iter() {
+        command.arg("--config").arg(keyval);
+    }
     if let Some(ref val) = args.manifest_path {
         command.arg("--manifest-path").arg(val);
     }

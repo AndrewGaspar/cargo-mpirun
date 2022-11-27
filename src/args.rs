@@ -62,6 +62,12 @@ pub struct Args {
     /// Build for the target triple
     #[arg(long, value_name = "TRIPLE")]
     pub target: Option<String>,
+    /// Directory for all generated artifacts
+    #[arg(long, value_name = "DIRECTORY")]
+    pub target_dir: Option<String>,
+    /// Override a configuration value
+    #[arg(long, value_name = "KEY=VAL")]
+    pub config: Vec<String>,
     /// Path to the manifest to execute
     #[arg(long)]
     pub manifest_path: Option<std::path::PathBuf>,
