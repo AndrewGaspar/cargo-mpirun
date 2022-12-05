@@ -1,39 +1,35 @@
-use clap::ArgMatches;
 use std::path::Path;
-use std::process::{self, Command};
+use std::process::Command;
 
-pub fn run(executable: &Path, matches: &ArgMatches) -> ! {
-    let mut mpirun = Command::new("mpiexec");
+/// Build command to run MPI job
+pub fn run_command(executable: &Path, args: &crate::Args) -> Command {
+    let mpiexec = if let Some(ref c) = args.mpiexec {
+        c.clone()
+    } else if let Ok(c) = std::env::var("MPIEXEC") {
+        c
+    } else if let Ok(prefix) = std::env::var("MPI_HOME") {
+        format!("{prefix}/bin/mpiexec")
+    } else {
+        // assume mpiexec is in PATH
+        "mpiexec".to_string()
+    };
+    let mut mpirun = Command::new(mpiexec);
 
-    if let Some(np) = matches.value_of("num_processes") {
-        mpirun.arg("-n").arg(np);
+    if let Some(n) = args.num_processes {
+        mpirun.arg("-n").arg(n.to_string());
     }
-
-    if let Some(n) = matches.value_of("num_processes_per_node") {
-        mpirun.arg("--npernode").arg(n);
+    if let Some(n) = args.num_processes_per_node {
+        mpirun.arg("--npernode").arg(n.to_string());
     }
-
-    if matches.is_present("oversubscribe") {
+    if args.oversubscribe {
         mpirun.arg("--oversubscribe");
     }
 
     mpirun.arg(executable);
+    mpirun.args(&args.args);
 
-    if let Some(args) = matches.values_of("args") {
-        mpirun.args(args);
-    }
-
-    if matches.is_present("verbose") {
+    if args.verbose > 0 {
         eprintln!("Running: {:?}", mpirun);
     }
-
-    let code = match mpirun.status() {
-        Ok(status) => status.code().unwrap_or(-1),
-        Err(_) => {
-            eprintln!("Could not find mpiexec - is it in your user path?");
-            -1
-        }
-    };
-
-    process::exit(code)
+    mpirun
 }
